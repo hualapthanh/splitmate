@@ -23,9 +23,10 @@
     <description>Intelligent expense splitting and debt settlement platform</description>
 
     <modules>
-<!--        <module>services/api-gateway</module>-->
-<!--        <module>services/auth-service</module>-->
-<!--        <module>services/user-service</module>-->
+        <module>services/api-gateway</module>
+        <module>services/auth-service</module>
+        <module>services/user-service</module>
+        <module>services/service-registry</module>
     </modules>
 
     <properties>
