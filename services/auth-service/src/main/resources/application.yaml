@@ -10,6 +10,7 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
     show-sql: true
@@ -37,8 +38,19 @@ jwt:
   access-token-expiration: 900          # 15 minutes in seconds
   refresh-token-expiration: 2592000     # 30 days in seconds
 
+kafka:
+  topic:
+    user-registered: user-registered-topic
+    password-changed: password-changed-topic
+
 security:
   bcrypt-strength: 12
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 
 logging:
   level:
@@ -51,3 +63,4 @@ management:
     web:
       exposure:
         include: health, info, metrics
+

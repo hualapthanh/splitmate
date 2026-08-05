@@ -10,6 +10,10 @@ public class UnauthorizedException extends BusinessException {
         super(errorCode);
     }
 
+    public UnauthorizedException(ErrorCode errorCode, String customMessage) {
+        super(errorCode, customMessage);
+    }
+
     public UnauthorizedException() {
         super(ErrorCode.AUTH_008);
     }
