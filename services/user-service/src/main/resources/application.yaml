@@ -10,6 +10,7 @@ spring:
     password: ${SPRING_DATASOURCE_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
   jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: validate
     show-sql: true
@@ -22,12 +23,12 @@ spring:
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:127.0.0.1:9092}
     consumer:
-      group-id: user-service-group
+      group-id: splitmate-user-service-v1
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
-        spring.json.trusted.packages: "com.pm.*"
+        spring.json.trusted.packages: "*"
 
 eureka:
   client:
@@ -35,6 +36,24 @@ eureka:
       defaultZone: http://127.0.0.1:8761/eureka/
   instance:
     prefer-ip-address: true
+
+jwt:
+  secret: ${JWT_SECRET:9a8b7c6d5e4f3g2h1i0j9k8l7m6n5o4p3q2r1s0t9u8v7w6x5y4z3A2B1C0D9E8F}
+
+kafka:
+  topics:
+    user-registered: user-registered-topic
+    user-registered-dlt: user-registered-topic.DLT
+  consumer-group: splitmate-user-service-v1
+
+security:
+  bcrypt-strength: 12
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
 
 logging:
   level:
