@@ -4,17 +4,38 @@ server:
 spring:
   application:
     name: api-gateway
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:127.0.0.1}
+      port: ${SPRING_REDIS_PORT:6379}
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
       routes:
         - id: auth-service
           uri: lb://auth-service
           predicates:
             - Path=/api/v1/auth/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 30
+                redis-rate-limiter.burstCapacity: 60
+                key-resolver: "#{@userKeyResolver}"
+
         - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/api/v1/users/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 300
+                redis-rate-limiter.burstCapacity: 600
+                key-resolver: "#{@userKeyResolver}"
 
 eureka:
   client:
@@ -23,10 +44,24 @@ eureka:
   instance:
     prefer-ip-address: true
 
+jwt:
+  secret: ${JWT_SECRET:9a8b7c6d5e4f3g2h1i0j9k8l7m6n5o4p3q2r1s0t9u8v7w6x5y4z3A2B1C0D9E8F}
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: Auth Service
+        url: /api/v1/auth/v3/api-docs
+      - name: User Service
+        url: /api/v1/users/v3/api-docs
+
 logging:
   level:
     root: INFO
-    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.gateway: INFO
     com.pm: DEBUG
 
 management:
