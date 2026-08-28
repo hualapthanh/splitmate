@@ -27,6 +27,7 @@
         <module>services/auth-service</module>
         <module>services/user-service</module>
         <module>services/service-registry</module>
+        <module>services/group-service</module>
     </modules>
 
     <properties>
