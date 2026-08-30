@@ -29,6 +29,7 @@
         <module>services/service-registry</module>
         <module>services/group-service</module>
         <module>services/expense-service</module>
+        <module>services/balance-service</module>
     </modules>
 
     <properties>
