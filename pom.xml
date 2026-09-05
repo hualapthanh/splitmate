@@ -31,6 +31,7 @@
         <module>services/expense-service</module>
         <module>services/balance-service</module>
         <module>services/notification-service</module>
+        <module>services/budget-service</module>
     </modules>
 
     <properties>

@@ -1,11 +1,11 @@
 server:
-  port: 8086
+  port: 8087
 
 spring:
   application:
-    name: notification-service
+    name: budget-service
   datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://127.0.0.1:5433/splitmate_notification}
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://127.0.0.1:5433/splitmate_budget}
     username: ${SPRING_DATASOURCE_USERNAME:splitmate}
     password: ${SPRING_DATASOURCE_PASSWORD:password}
     driver-class-name: org.postgresql.Driver
@@ -23,12 +23,15 @@ spring:
   kafka:
     bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:127.0.0.1:9092}
     consumer:
-      group-id: notification-service-group
+      group-id: budget-service-group
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
       properties:
         spring.json.trusted.packages: "*"
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
 
 eureka:
   client:
@@ -42,9 +45,7 @@ jwt:
 
 kafka:
   topics:
-    group-events: group-events-topic
     expense-events: expense-events-topic
-    settlement-events: settlement-events-topic
     budget-events: budget-events-topic
 
 springdoc:

@@ -78,4 +78,25 @@ public class NotificationEventListener {
             log.error("Failed to process SettlementCreatedEvent", e);
         }
     }
+
+    @KafkaListener(topics = "${kafka.topics.budget-events:budget-events-topic}", groupId = "${spring.kafka.consumer.group-id}")
+    public void handleBudgetAlertEvent(com.pm.notificationservice.event.BudgetAlertEvent event) {
+        log.info("NotificationService received BudgetAlertEvent for budgetId: {} (threshold: {}%)", event.getBudgetId(), event.getThresholdPercent());
+        try {
+            if (event.getUserId() != null) {
+                String title = String.format("Budget Alert (%d%%)", event.getThresholdPercent());
+                notificationService.createAndSendNotification(
+                        event.getUserId(),
+                        null,
+                        title,
+                        event.getMessage(),
+                        "BUDGET_ALERT",
+                        event.getBudgetId()
+                );
+            }
+        } catch (Exception e) {
+            log.error("Failed to process BudgetAlertEvent", e);
+        }
+    }
 }
+

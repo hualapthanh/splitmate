@@ -1,4 +1,4 @@
-package com.pm.notificationservice.config;
+package com.pm.budgetservice.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -12,9 +12,7 @@ public class KafkaProperties {
 
     @Data
     public static class Topics {
-        private String groupEvents = "group-events-topic";
         private String expenseEvents = "expense-events-topic";
-        private String settlementEvents = "settlement-events-topic";
         private String budgetEvents = "budget-events-topic";
     }
 }
