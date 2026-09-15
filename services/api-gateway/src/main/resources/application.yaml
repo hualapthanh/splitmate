@@ -48,6 +48,17 @@ spring:
                 redis-rate-limiter.burstCapacity: 600
                 key-resolver: "#{@userKeyResolver}"
 
+        - id: analytics-service
+          uri: lb://analytics-service
+          predicates:
+            - Path=/api/v1/analytics/**
+          filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 300
+                redis-rate-limiter.burstCapacity: 600
+                key-resolver: "#{@userKeyResolver}"
+
 eureka:
   client:
     service-url:
@@ -70,6 +81,8 @@ springdoc:
         url: /api/v1/users/v3/api-docs
       - name: Budget Service
         url: /api/v1/budgets/v3/api-docs
+      - name: Analytics Service
+        url: /api/v1/analytics/v3/api-docs
 
 logging:
   level:

@@ -148,6 +148,27 @@ services:
     profiles:
       - apps
 
+  analytics-service:
+    image: splitmate/analytics-service:0.0.1
+    build:
+      context: ./services/analytics-service
+    container_name: splitmate-analytics-service
+    ports:
+      - "8088:8088"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/splitmate_analytics
+      SPRING_DATASOURCE_USERNAME: splitmate
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
+    depends_on:
+      - postgres
+      - kafka
+      - service-registry
+    profiles:
+      - apps
+
+
 volumes:
   postgres_data:
   redis_data:
