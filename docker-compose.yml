@@ -65,9 +65,9 @@ services:
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     healthcheck:
-      test: ["CMD-SHELL", "kafka-topics.sh --bootstrap-server localhost:9092 --list || exit 1"]
-      interval: 15s
-      timeout: 10s
+      test: ["CMD-SHELL", "/usr/bin/kafka-topics --bootstrap-server kafka:29092 --list || exit 1"]
+      interval: 10s
+      timeout: 5s
       retries: 5
 
   kafka-ui:
@@ -167,6 +167,107 @@ services:
       - service-registry
     profiles:
       - apps
+
+  group-service:
+    image: splitmate/group-service:0.0.1
+    build:
+      context: ./services/group-service
+    container_name: splitmate-group-service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/splitmate_group
+      SPRING_DATASOURCE_USERNAME: splitmate
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
+    depends_on:
+      - postgres
+      - kafka
+      - service-registry
+    profiles:
+      - apps
+
+  expense-service:
+    image: splitmate/expense-service:0.0.1
+    build:
+      context: ./services/expense-service
+    container_name: splitmate-expense-service
+    ports:
+      - "8084:8084"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/splitmate_expense
+      SPRING_DATASOURCE_USERNAME: splitmate
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
+    depends_on:
+      - postgres
+      - kafka
+      - service-registry
+    profiles:
+      - apps
+
+  balance-service:
+    image: splitmate/balance-service:0.0.1
+    build:
+      context: ./services/balance-service
+    container_name: splitmate-balance-service
+    ports:
+      - "8085:8085"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/splitmate_balance
+      SPRING_DATASOURCE_USERNAME: splitmate
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
+    depends_on:
+      - postgres
+      - kafka
+      - service-registry
+    profiles:
+      - apps
+
+  notification-service:
+    image: splitmate/notification-service:0.0.1
+    build:
+      context: ./services/notification-service
+    container_name: splitmate-notification-service
+    ports:
+      - "8086:8086"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/splitmate_notification
+      SPRING_DATASOURCE_USERNAME: splitmate
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
+    depends_on:
+      - postgres
+      - kafka
+      - service-registry
+    profiles:
+      - apps
+
+  budget-service:
+    image: splitmate/budget-service:0.0.1
+    build:
+      context: ./services/budget-service
+    container_name: splitmate-budget-service
+    ports:
+      - "8087:8087"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/splitmate_budget
+      SPRING_DATASOURCE_USERNAME: splitmate
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://service-registry:8761/eureka/
+    depends_on:
+      - postgres
+      - kafka
+      - service-registry
+    profiles:
+      - apps
+
 
 
 volumes:

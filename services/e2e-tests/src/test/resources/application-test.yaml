@@ -1,0 +1,15 @@
+spring:
+  main:
+    banner-mode: off
+
+splitmate:
+  gateway-url: ${GATEWAY_URL:http://localhost:8080}
+  services:
+    auth: ${AUTH_SERVICE_URL:http://localhost:8081}
+    user: ${USER_SERVICE_URL:http://localhost:8082}
+    group: ${GROUP_SERVICE_URL:http://localhost:8083}
+    expense: ${EXPENSE_SERVICE_URL:http://localhost:8084}
+    balance: ${BALANCE_SERVICE_URL:http://localhost:8085}
+    notification: ${NOTIFICATION_SERVICE_URL:http://localhost:8086}
+    budget: ${BUDGET_SERVICE_URL:http://localhost:8087}
+    analytics: ${ANALYTICS_SERVICE_URL:http://localhost:8088}
